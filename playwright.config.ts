@@ -42,6 +42,12 @@ export default defineConfig({
       name: "chrome-mobile",
       use: { ...devices["Pixel 5"] },
     },
+    {
+      name: "cart-desktop",
+      grep: /@cart/,
+      timeout: 60_000,
+      use: { ...devices["Desktop Chrome"] },
+    },
   ],
 
   /* Run your local dev server before starting the tests */

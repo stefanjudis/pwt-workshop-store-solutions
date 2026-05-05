@@ -34,7 +34,7 @@ test("login / logout", async ({ page, isMobile }) => {
   await expect(greeting).not.toBeVisible();
 });
 
-// INLINE EXERCISE
+// ---------------- INLINE EXERCISE
 
 test("locator-chaining", async ({ page }) => {
   await page.goto("/lessons/writing-tests/01-locators-and-actions/");

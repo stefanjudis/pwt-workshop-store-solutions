@@ -43,10 +43,15 @@ export default defineConfig({
       use: { ...devices["Pixel 5"] },
     },
     {
+      name: "setup",
+      testMatch: "*.setup.ts",
+    },
+    {
       name: "cart-desktop",
       grep: /@cart/,
       timeout: 60_000,
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Desktop Chrome"], storageState: "./tests/auth.json" },
+      dependencies: ["setup"],
     },
   ],
 

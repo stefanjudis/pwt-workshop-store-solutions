@@ -13,3 +13,10 @@ test("locator-chaining", async ({ page }) => {
     listContainer.getByRole("button", { name: "Product added" }),
   ).toBeVisible();
 });
+
+test("actionability-chain", async ({ page }) => {
+  await page.goto("/lessons/writing-tests/01-locators-and-actions/");
+  await page.getByRole("button", { name: "Step" }).click();
+  await page.getByRole("button", { name: "Step 2" }).click();
+  await page.getByRole("button", { name: "Step 3" }).click();
+});

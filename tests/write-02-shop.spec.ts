@@ -36,6 +36,27 @@ test("only three snowboards", async ({ page }) => {
   );
 });
 
+test("search for hydrogen", async ({ page, isMobile }) => {
+  await page.goto("/");
+
+  if (isMobile) {
+    await page.getByRole("button", { name: "Open mobile menu" }).click();
+  }
+
+  await page
+    .getByRole("textbox", { name: "Search for products..." })
+    .fill("Hydrogen");
+  await page.getByRole("button", { name: "Search" }).click();
+  await expect(page).toHaveURL(/search/);
+  await page
+    .getByRole("link", {
+      name: "The Collection Snowboard: Liquid The Collection Snowboard: Liquid",
+    })
+    .click();
+  await page.getByRole("button", { name: "Add item to cart" }).click();
+  await page.getByRole("heading", { name: "My Cart" }).click();
+});
+
 // ---------------- INLINE EXERCISE
 
 test("locator-chaining", async ({ page }) => {

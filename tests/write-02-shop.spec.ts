@@ -1,4 +1,4 @@
-import test, { expect } from "@playwright/test";
+import test, { expect, Locator } from "@playwright/test";
 
 test("login / logout", async ({ page, isMobile }) => {
   const USER_NAME = "Stefan";
@@ -55,6 +55,32 @@ test("search for hydrogen", async ({ page, isMobile }) => {
     .click();
   await page.getByRole("button", { name: "Add item to cart" }).click();
   await page.getByRole("heading", { name: "My Cart" }).click();
+});
+
+test("calculate cart", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "The Multi-managed Snowboard" }).click();
+  await page.getByRole("button", { name: "Add item to cart" }).click();
+
+  const cart = page.getByTestId("cart");
+  const cartItem = cart.getByTestId("cart-item").first();
+  const cartTotal = page.getByTestId("cart-total");
+
+  const readAmount = async (loc: Locator) => {
+    await expect(loc).toBeVisible();
+    const price = await loc.innerText();
+    return parseFloat(price!.replace(/[^0-9.]/g, ""));
+  };
+
+  let unitPrice = await readAmount(cartItem.getByTestId("cart-item-price"));
+
+  await test.step("Assert -> Double -> Assert", async () => {
+    await expect(cartTotal).toHaveText(`${unitPrice}`);
+    await cartItem
+      .getByRole("button", { name: "Increase item quantity" })
+      .click();
+    await expect(cartTotal).toHaveText(`${unitPrice * 2}`);
+  });
 });
 
 // ---------------- INLINE EXERCISE

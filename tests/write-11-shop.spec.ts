@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./base";
 
 test("final checkout", async ({ page }) => {
   await page.request.post("/api/login/", {

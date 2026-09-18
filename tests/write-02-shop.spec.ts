@@ -1,6 +1,6 @@
 import test, { expect, Locator } from "@playwright/test";
 
-test("login / logout", async ({ page, isMobile }) => {
+test("Exercise 1: login / logout", async ({ page, isMobile }) => {
   const USER_NAME = "Stefan";
 
   await page.goto("/");
@@ -26,7 +26,7 @@ test("login / logout", async ({ page, isMobile }) => {
   await expect(greeting).not.toBeVisible();
 });
 
-test("only three snowboards", async ({ page }) => {
+test("Exercise 2: only three snowboards", async ({ page }) => {
   const PRODUCT_COUNT = 3;
   await page.goto("/");
   const heroLinks = page.getByTestId("hero-product-grid").getByRole("link");
@@ -36,7 +36,7 @@ test("only three snowboards", async ({ page }) => {
   );
 });
 
-test("search for hydrogen", async ({ page, isMobile }) => {
+test("Exercise 3: search for hydrogen", async ({ page, isMobile }) => {
   await page.goto("/");
 
   if (isMobile) {

@@ -40,7 +40,7 @@ playwright-cli video-start recordings/checkout-test-run-42.webm
 ### 2. Record entire hero scripts.
 
 When recording a video for the user or as a proof of work, it is best to create a code snippet and execute it with run-code.
-It allows pulling appropriate pauses between the actions and annotating the video. There are new Playwright APIs for that.
+It allows inserting appropriate pauses between the actions and annotating the video. There are new Playwright APIs for that.
 
 1) Perform scenario using CLI and take note of all locators and actions. You'll need those locators to request their bounding boxes for highlight.
 2) Create a file with the intended script for video (below). Use pressSequentially w/ delay for nice typing, make reasonable pauses.
@@ -127,6 +127,18 @@ Embrace creativity, overlays are powerful.
 | `page.screencast.showOverlay(html, { duration? })` | Custom HTML overlay — use for callouts, labels, highlights |
 | `disposable.dispose()` | Remove a sticky overlay added without duration |
 | `page.screencast.hideOverlays()` / `page.screencast.showOverlays()` | Temporarily hide/show all overlays |
+
+### 3. Attach the recording to the pull request
+
+A hero script recording is the best proof of work for a user-facing change. GitHub accepts WebM as is, so once the recording looks right, attach it with `gh` 2.99+ instead of describing the flow in words:
+
+```bash
+gh pr create --title "feat(todo): add items inline" --body-file body.md --attach ./demo.webm
+gh pr comment 123 --body "Walkthrough of the new flow." --attach ./demo.webm
+gh issue comment 456 --body "Recording of the repro steps." --attach ./repro.webm
+```
+
+`gh` appends unreferenced attachments to the end of the body, which is the right place for a walkthrough. Videos are limited to 10 MB on free plans and 100 MB on paid plans, so keep the script focused, record at a modest size such as 1280x800 and drop chapters that do not add to the story. See [pr-attachments.md](pr-attachments.md) for the full set of commands, including attaching test artifacts from CI.
 
 ## Tracing vs Video
 

@@ -17,7 +17,9 @@ test("take a screenshot", async ({ page, browserName }) => {
   );
 });
 
-test("masked product card screenshot", async ({ page }, testInfo) => {
+test("Exercise 1: masked product card screenshot", async ({
+  page,
+}, testInfo) => {
   await page.goto("/search");
 
   await expect(page).toHaveScreenshot({

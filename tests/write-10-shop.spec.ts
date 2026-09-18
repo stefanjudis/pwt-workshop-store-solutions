@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
+import { readFile } from "node:fs/promises";
 
-test("track js logs", async ({ page }) => {
+test("Exercise 1: track js logs", async ({ page }) => {
   const logs: string[] = [];
   page.on("console", (log) => logs.push(log.text()));
 
@@ -9,7 +10,7 @@ test("track js logs", async ({ page }) => {
   expect(logs).toHaveLength(0);
 });
 
-test("catch bluesky", async ({ page }) => {
+test("Exercise 2: catch bluesky", async ({ page }) => {
   await page.goto("/product/the-multi-managed-snowboard");
   const productTitle = await page
     .getByRole("heading", { level: 1 })
@@ -23,7 +24,7 @@ test("catch bluesky", async ({ page }) => {
 
 // ---------------- INLINE EXERCISE
 
-test("track js errors", async ({ page }) => {
+test("Inline 1: track js errors", async ({ page }) => {
   const errors: Error[] = [];
   page.on("pageerror", (error) => errors.push(error));
 
@@ -37,7 +38,7 @@ test("track js errors", async ({ page }) => {
   expect(errors[0].message).toBe("Boom! Something went wrong.");
 });
 
-test("answer a prompt", async ({ page }) => {
+test("Inline 2: answer a prompt", async ({ page }) => {
   page.on("dialog", async (dialog) => {
     expect(dialog.type()).toBe("prompt");
     expect(dialog.message()).toBe("What's your name?");
@@ -51,4 +52,25 @@ test("answer a prompt", async ({ page }) => {
   await expect(exercise.getByTestId("prompt-greeting")).toHaveText(
     "Hi, Stefan!",
   );
+});
+
+test("Inline 3: downloads the invoice and checks its content", async ({
+  page,
+}) => {
+  await page.goto("/lessons/writing-tests/10-page-events");
+
+  // Start listening before the click, but don't await yet
+  const downloadPromise = page.waitForEvent("download");
+  await page
+    .getByTestId("download-exercise")
+    .getByRole("link", { name: "Download invoice" })
+    .click();
+  const download = await downloadPromise;
+
+  expect(await download.failure()).toBeNull();
+  expect(download.suggestedFilename()).toBe("invoice-0042.txt");
+
+  // `path()` resolves once the download has finished
+  const content = await readFile(await download.path(), "utf-8");
+  expect(content).toContain("Total: $42.00");
 });

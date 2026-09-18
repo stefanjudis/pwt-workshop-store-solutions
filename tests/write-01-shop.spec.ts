@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("add 2nd product to the cart", async ({ page }) => {
+test("Exercise 1: add 2nd product to the cart", async ({ page }) => {
   await page.goto("/");
   await page.getByTestId("hero-product-grid").getByRole("link").nth(2).click();
 
@@ -8,7 +8,7 @@ test("add 2nd product to the cart", async ({ page }) => {
   await page.getByRole("button", { name: "Close cart" }).click();
 });
 
-test("login / logout", async ({ page, isMobile }) => {
+test("Exercise 2: login / logout", async ({ page, isMobile }) => {
   const USER_NAME = "Stefan";
 
   await page.goto("/");

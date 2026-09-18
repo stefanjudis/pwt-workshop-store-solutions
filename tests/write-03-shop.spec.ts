@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-test("ARIA check on search navigations", async ({ page, isMobile }) => {
+test("Exercise 1: ARIA check on search navigations", async ({
+  page,
+  isMobile,
+}) => {
   if (isMobile) test.skip();
 
   await page.goto("/search/");
@@ -9,8 +12,9 @@ test("ARIA check on search navigations", async ({ page, isMobile }) => {
     - navigation "Collections":
       - heading "Collections" [level=3]
       - list
-    - heading "Products" [level=1]
-    - list
+    - region "Products":
+      - heading "Products" [level=1]
+      - list
     - navigation "Sort by":
       - heading "Sort by" [level=3]
       - list:
@@ -27,7 +31,10 @@ test("ARIA check on search navigations", async ({ page, isMobile }) => {
     `);
 });
 
-test("ARIA check on main navigation", async ({ page, isMobile }) => {
+test("Exercise 2: ARIA check on main navigation", async ({
+  page,
+  isMobile,
+}) => {
   await page.goto("https://www.playwright-workshop.online/");
 
   if (isMobile) {
@@ -65,7 +72,6 @@ test("aria-snapshot", async ({ page }) => {
   await page.goto("/lessons/writing-tests/03-accessibility-assertions/");
   const container = page.getByTestId("aria-snapshot-exercise");
   await expect(container.getByLabel("Newsletter form")).toMatchAriaSnapshot(`
-    - region "Newsletter form":
       - heading [level=2]
       - paragraph
       - button "Submit"

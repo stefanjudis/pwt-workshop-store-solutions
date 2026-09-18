@@ -9,3 +9,5 @@ node_modules/
 .playwright-cli
 tests/auth.json
 screenshots/
+# Playwright CLI output (may contain credentials)
+.playwright-cli/

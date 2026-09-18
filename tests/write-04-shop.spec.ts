@@ -3,10 +3,10 @@ import { expect, test } from "@playwright/test";
 const isSortedAsc = (arr) =>
   arr.every((element, index, array) => !index || +array[index - 1] <= +element);
 
-test("check sorting", async ({ page, isMobile }) => {
+test("Exercise 1: check sorting", async ({ page, isMobile }) => {
   if (isMobile) test.skip();
 
-  await page.goto("http://localhost:3000");
+  await page.goto("/");
   await page.getByRole("link", { name: "Products" }).click();
   await page.getByRole("link", { name: "Price: Low to high" }).click();
   await expect(page).toHaveURL(/sort=price-asc/);

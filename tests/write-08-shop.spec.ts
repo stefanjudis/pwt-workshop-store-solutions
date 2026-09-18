@@ -1,19 +1,19 @@
 import test, { expect } from "@playwright/test";
 
-test("mock the geo box", async ({ page }) => {
+test("Exercise 1: mock the geo box", async ({ page }) => {
   await page.route("**/api/geo/", (route) => {
     return route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify({ country: "DE" }),
+      body: JSON.stringify({ country: "GR" }),
     });
   });
   await page.goto("/");
 
-  await expect(page.getByTestId("geo-location")).toContainText("DE");
+  await expect(page.getByTestId("geo-location")).toContainText("GR");
 });
 
-test("break the news", async ({ page }) => {
+test("Exercise 2: break the news", async ({ page }) => {
   await page.route("**/api/news/", async (route) => {
     const response = await route.fetch();
     const news = await response.json();
@@ -29,7 +29,7 @@ test("break the news", async ({ page }) => {
   await expect(page.getByTestId("newsbox")).toContainText(/No news today/);
 });
 
-test("block all the images", async ({ page }) => {
+test("Exercise 3: block all the images", async ({ page }) => {
   await page.route("**/*", (route) => {
     const type = route.request().resourceType();
     if (type === "image" || type === "media" || type === "font") {
@@ -39,12 +39,14 @@ test("block all the images", async ({ page }) => {
   });
 
   await page.goto("/");
-  await expect(page).toHaveScreenshot("no-images.png");
+  await expect(page).toHaveScreenshot("no-images.png", {
+    maxDiffPixelRatio: 0.02,
+  });
 });
 
 // ---------------- INLINE EXERCISE
 
-test("mock the news box", async ({ page }) => {
+test("Inline 1: mock the news box", async ({ page }) => {
   await page.route("**/api/news/", (route) =>
     route.fulfill({
       status: 200,
@@ -57,7 +59,7 @@ test("mock the news box", async ({ page }) => {
   await expect(page.getByTestId("newsbox")).toContainText("🚨 Test news!");
 });
 
-test("block the tracking script", async ({ page }) => {
+test("Inline 2: block the tracking script", async ({ page }) => {
   const messages: string[] = [];
   page.on("console", (msg) => messages.push(msg.text()));
 

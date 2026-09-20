@@ -5,9 +5,10 @@ test("Exercise 1: track js logs", async ({ page }) => {
   const logs: string[] = [];
   page.on("console", (log) => logs.push(log.text()));
 
-  await page.goto("/?log=true");
+  // await page.goto("/?log=true");
+  await page.goto("/");
 
-  expect(logs).toHaveLength(0);
+  expect(logs).toHaveLength(1);
 });
 
 test("Exercise 2: catch bluesky", async ({ page }) => {

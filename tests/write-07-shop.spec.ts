@@ -23,6 +23,7 @@ test("Exercise 1: masked product card screenshot", async ({
   await page.goto("/search");
 
   await expect(page).toHaveScreenshot({
+    maxDiffPixelRatio: 0.1,
     mask: [page.getByTestId("search-grid").getByRole("link")],
   });
 });

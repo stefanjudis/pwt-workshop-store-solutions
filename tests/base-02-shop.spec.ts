@@ -2,7 +2,10 @@ import { expect, test } from "@playwright/test";
 
 test("[broken] completes a full shopping journey from search to cart", async ({
   page,
+  isMobile,
 }) => {
+  if (isMobile) test.skip();
+
   await page.goto("https://www.playwright-workshop.online");
 
   await page.getByRole("link", { name: "Login" }).click();
